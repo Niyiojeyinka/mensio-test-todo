@@ -2,6 +2,8 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import request from "./helpers/request";
 import removeFromTodo from "./helpers/todo";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BACKEND_URL = "http://localhost:9000/api/todo";
 
@@ -18,12 +20,7 @@ const EachListView = ({ todo, handleRemove, handleClick }) => {
     </div>
   );
 };
-/*
-const testData = [{ title: "need to read", 
-status: "published", id: null
-actionStatus:1
-}];
-*/
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
@@ -71,17 +68,19 @@ function App() {
     //send to server
     let result = await sendTodoToBackend(todo);
     if (result) {
-      todos[0]["actionStatus"] = 1;
       todos[0]["id"] = result;
+      toast.success("Todo Added Successfuly");
+      setTodos(todos);
     } else {
-      todos[0]["actionStatus"] = 0;
-      todos[0]["id"] = null;
-      alert("Error Occured");
+      setTodo(todos[0]["title"]);
+      toast.error("Error Occurred,please retry");
+      const updatedTodos = removeFromTodo(0, todos);
+      setTodos(updatedTodos);
     }
-    setTodos(todos);
   };
 
   const handleDelete = async (index) => {
+    const keepTodo = todos[index];
     const updatedTodos = removeFromTodo(index, todos);
     setTodos(updatedTodos);
 
@@ -95,12 +94,15 @@ function App() {
       );
 
       if (response.status === 200) {
-        return response.body.data.id;
+        //return response.body.data.id;
+        toast.success("Deleted Successfuly");
       } else {
-        return false;
+        throw new Error("");
       }
     } catch (e) {
-      return false;
+      updatedTodos.unshift(keepTodo);
+      setTodos([...updatedTodos]);
+      toast.error("Couldn't Complete,pls try again");
     }
   };
 
@@ -125,12 +127,15 @@ function App() {
       );
 
       if (response.status === 200) {
-        void 0;
+        toast.success("Task Completed Successfully");
       } else {
-        alert("Couldn't mark completed ,please try again");
+        throw new Error("");
       }
     } catch (e) {
-      alert("Couldn't mark completed ,please try again");
+      toast.error("Couldn't Complete,pls try again");
+
+      todos[index]["status"] = "pending";
+      setTodos([...todos]);
     }
   };
 
@@ -170,6 +175,7 @@ function App() {
         </button>
       </div>
       <div>{todoDisplayJSX}</div>
+      <ToastContainer autoClose={2000} />
     </div>
   );
 }
