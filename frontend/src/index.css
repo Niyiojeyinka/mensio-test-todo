@@ -27,11 +27,6 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
-@media screen and (max-width: 320px) {
-  body {
-    padding: 3% !important;
-  }
-}
 input {
   border: 2px solid #c5d0e7;
   border-radius: 5px;
@@ -93,4 +88,13 @@ div span {
 .completed span {
   text-decoration: line-through !important;
   color: #c3cfe5 !important;
+}
+
+@media screen and (max-width: 320px) {
+  body {
+    padding: 3% !important;
+  }
+  input {
+    width: 60%;
+  }
 }
