@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 /**
  *
  * @param {*} url  endpoint url
@@ -7,13 +6,7 @@ const fetch = require("node-fetch");
  * @param {*} data  data object
  * @param {*} token  bearer token
  */
-exports.request = async (
-  url,
-  method,
-  type = "json",
-  data = {},
-  token = null
-) => {
+const request = async (url, method, type = null, data = {}, token = null) => {
   const meta = {
     method,
     headers: {
@@ -21,11 +14,11 @@ exports.request = async (
     },
   };
   if (type == "json") {
-    meta["headers"]["Content-Type"] = "application/json";
     if (method != "GET" || method != "DELETE") {
       meta["body"] = JSON.stringify(data);
+      meta["headers"]["Content-Type"] = "application/json";
     }
-  } else {
+  } else if (type !== null) {
     let formData = new FormData();
 
     for (let field of Object.keys(data)) {
@@ -44,3 +37,5 @@ exports.request = async (
     body: responseData,
   };
 };
+
+export default request;
