@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f1f2f4;
+  padding: 5%;
 }
 
 code {
@@ -23,11 +25,6 @@ html {
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-}
-body {
-  margin: 0;
-  background-color: #f1f2f4;
-  padding: 5%;
 }
 
 @media screen and (max-width: 320px) {
@@ -49,7 +46,7 @@ input {
   font-weight: bolder;
   font-size: 64px;
   float: left;
-  margin-bottom: 40% !important;
+  margin-bottom: 40px !important;
 }
 
 button.submit {
